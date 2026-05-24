@@ -27,8 +27,9 @@ export async function interviewWithOpenAI(input: InterviewTurnInput): Promise<In
   try {
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const offline = runOfflineTurn(input);
+    const model = process.env.OPENAI_MODEL?.trim() || "gpt-5.5";
     const response = await client.responses.create({
-      model: process.env.OPENAI_MODEL ?? "gpt-5.5",
+      model,
       input: [
         {
           role: "system",
