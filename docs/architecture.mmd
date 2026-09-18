@@ -1,0 +1,13 @@
+flowchart TD
+    A[Candidate profile] --> B[Question planner]
+    B --> C[Initial interviewer prompt]
+    C --> D[Candidate answer]
+    D --> E{OpenAI key configured?}
+    E -->|Yes| F[Server-side OpenAI interviewer]
+    E -->|No or failed response| G[Deterministic offline engine]
+    F --> H[Rubric scoring and coaching]
+    G --> H
+    H --> I[Transcript update]
+    I --> J{More planned questions?}
+    J -->|Yes| D
+    J -->|No| K[Exportable interview report]

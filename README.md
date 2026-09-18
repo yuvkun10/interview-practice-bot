@@ -78,7 +78,7 @@ npm run outdated  # fail when npm reports outdated direct dependencies
 
 The Vite dev server proxies `/api` to the Express server on `127.0.0.1:8787`.
 
-## Codebase Structure
+## Repository map
 
 ```text
 server/
@@ -114,6 +114,10 @@ tests/
 ## Dependency Maintenance
 
 CI runs linting, tests, builds, `npm audit --audit-level=moderate`, and `npm outdated`. Dependabot is configured for npm packages and GitHub Actions on a weekly schedule.
+
+## Documentation
+
+- [Architecture diagram source](docs/architecture.mmd)
 
 ## License
 
