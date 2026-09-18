@@ -31,6 +31,7 @@ jobs:
 
       - name: Check outdated dependencies
         run: npm run outdated
+        continue-on-error: true  # informational: newer releases should not fail CI
 
       - name: Lint
         run: npm run lint
