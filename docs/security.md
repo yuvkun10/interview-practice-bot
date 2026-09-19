@@ -4,5 +4,6 @@
 - The OpenAI request uses `store: false`.
 - Without `OPENAI_API_KEY`, the app uses the deterministic offline engine and does not need external AI access.
 - Practice transcripts live in browser session state unless you export them. Treat exported reports as sensitive interview preparation notes.
+- The built client fallback route allows 100 requests per minute per IP and then returns 429.
 - Do not paste confidential employer or customer details, or personally sensitive details, into practice answers.
 - `.env.local`, `.env`, logs, build outputs and `node_modules` are ignored by git. Keep real secrets out of commits and public issue reports.

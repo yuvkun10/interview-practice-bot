@@ -65,4 +65,38 @@ describe("interview API validation", () => {
     expect(interviewer).toHaveBeenCalledOnce();
     expect(interviewer.mock.calls[0]?.[0].profile.skills).toEqual(["Node.js", "Caching"]);
   });
+
+  it("exports the report as plain text that browsers must not sniff as HTML", async () => {
+    const app = createApp({ interviewer: vi.fn() });
+    const role = "<script>alert(1)</script>";
+
+    const response = await request(app)
+      .post("/api/interview/export")
+      .send({
+        id: "session-1",
+        profile: { role, seniority: "Senior", interviewType: "Technical", skills: ["Node.js"] },
+        currentQuestionIndex: 0,
+        plannedQuestions: [],
+        messages: [],
+        scores: [],
+        status: "complete"
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.headers["content-type"]).toBe("text/plain; charset=utf-8");
+    expect(response.headers["x-content-type-options"]).toBe("nosniff");
+    expect(response.text).toContain(`Role: ${role}`);
+  });
+
+  it("rate limits the client fallback route", async () => {
+    const app = createApp({ interviewer: vi.fn() });
+
+    for (let index = 0; index < 100; index += 1) {
+      const response = await request(app).get("/practice");
+      expect(response.status).not.toBe(429);
+    }
+
+    const limited = await request(app).get("/practice");
+    expect(limited.status).toBe(429);
+  });
 });
