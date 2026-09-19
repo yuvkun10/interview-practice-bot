@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import { rateLimit } from "express-rate-limit";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createInitialSession } from "../src/domain/offlineEngine.js";
@@ -58,7 +59,10 @@ export function createApp({ interviewer = interviewWithOpenAI }: CreateAppOption
 
   app.post("/api/interview/export", (request, response) => {
     const session = request.body as InterviewSession;
-    response.type("text/plain").send(exportSessionReport(session));
+    // Plain text with sniffing disabled, so user content is never rendered as HTML.
+    response.set("Content-Type", "text/plain; charset=utf-8");
+    response.set("X-Content-Type-Options", "nosniff");
+    response.send(exportSessionReport(session));
   });
 
   serveStaticBuild(app);
@@ -79,7 +83,7 @@ function serveStaticBuild(app: express.Express): void {
   const clientDist = path.resolve(currentDir, "..", "dist");
 
   app.use(express.static(clientDist));
-  app.get(/^(?!\/api).*/, (_request, response) => {
+  app.get(/^(?!\/api).*/, rateLimit({ windowMs: 60_000, limit: 100 }), (_request, response) => {
     response.sendFile(path.join(clientDist, "index.html"));
   });
 }

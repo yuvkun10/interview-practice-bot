@@ -33,7 +33,23 @@ export function exportSessionReport(session: InterviewSession): string {
     lines.push(formatMessage(message));
   }
 
-  return lines.join("\n").replace(/[ \t]+$/gm, "");
+  return trimTrailingBlanks(lines.join("\n"));
+}
+
+// Removes spaces and tabs before every line break and at the end, in linear time.
+function trimTrailingBlanks(text: string): string {
+  return text
+    .split(/([\n\r\u2028\u2029])/)
+    .map((part, index) => (index % 2 === 0 ? trimLineEnd(part) : part))
+    .join("");
+}
+
+function trimLineEnd(line: string): string {
+  let end = line.length;
+  while (end > 0 && (line[end - 1] === " " || line[end - 1] === "\t")) {
+    end -= 1;
+  }
+  return line.slice(0, end);
 }
 
 function formatMessage(message: TranscriptMessage): string {
