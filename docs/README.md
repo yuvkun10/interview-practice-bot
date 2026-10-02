@@ -5,4 +5,4 @@
 - [configuration.md](configuration.md): environment variables and the local env file.
 - [security.md](security.md): privacy and security notes for API keys and transcripts.
 - [operations.md](operations.md): dependency maintenance and CI checks.
-- [archive/](archive/): earlier README versions, kept verbatim. Currently [README-2026-09-19.md](archive/README-2026-09-19.md).
+- [archive/](archive/): earlier README versions, kept verbatim. Currently [README-2026-09-19.md](https://github.com/yuvkun10/interview-practice-bot/blob/ec1de866742202384165ee56c50cb79bea491d9b/docs/archive/README-2026-09-19.md).
